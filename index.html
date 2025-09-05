@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Escape Room - Juego</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+    }
+    .slide {
+      display: none;
+      padding: 50px;
+    }
+    .active {
+      display: block;
+    }
+    button {
+      display: block;
+      margin: 10px auto;
+      padding: 20px 40px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    button:not(.no-animate):active {
+      transform: scale(1.1);
+    }
+    button.no-animate {
+      background-color: #555;
+    }
+    #final-image {
+      max-width: 90%;
+      margin-top: 20px;
+    }
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .grid-container button {
+        margin: 0;
+        height: 80px;
+    }
+    /* Ajusta la altura automáticamente solo para el botón largo */
+    .auto-height {
+        height: auto !important;
+        white-space: normal;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Menú principal -->
+  <div id="slide-menu" class="slide active ">
+    <h1>MENÚ PRINCIPAL</h1>
+    <div class="grid-container">
+        <button onclick="goTo('slide-aun')">AUN NO SOY CLIENTE</button>
+        <button onclick="goTo('slide-clientes')">CLIENTES</button>
+        <button onclick="goTo('slide-pymes')">PYMES</button>
+        <button onclick="goTo('slide-depositos')">DEPOSITOS MENORES A $30,000</button>
+    </div>
+  </div>
+
+  <!-- AUN NO SOY CLIENTE -->
+  <div id="slide-aun" class="slide">
+    <h2>AUN NO SOY CLIENTE</h2>
+    <div class="grid-container">
+      <button onclick="checkSequence('APERTURA CUENTA')">APERTURA CUENTA</button>
+      <button onclick="checkSequence('DEPOSITOS Y RETIROS')">DEPOSITOS Y RETIROS</button>
+      <button onclick="checkSequence('PAGO TARJETAS')">PAGO TARJETAS</button>
+      <button onclick="checkSequence('PAGO SERVICIOS')">PAGO SERVICIOS</button>
+    </div>
+      <button class="no-animate" onclick="goTo('slide-menu')">VOLVER AL MENU PRINCIPAL</button>
+  </div>
+
+  <!-- CLIENTES -->
+  <div id="slide-clientes" class="slide">
+    <h2>CLIENTES</h2>
+    <div class="grid-container">
+      <button onclick="checkSequence('VENTANILLA CLIENTES')">VENTANILLA CLIENTES</button>
+      <button onclick="checkSequence('EJECUTIVO CUENTA')">EJECUTIVO CUENTA</button>
+      <button onclick="checkSequence('VENTANILLA CLIENTES PREMIUM')">VENTANILLA CLIENTES PREMIUM</button>
+      <button onclick="checkSequence('EJECUTIVO PREMIUM')">EJECUTIVO PREMIUM</button>
+    </div>
+      <button class="no-animate" onclick="goTo('slide-menu')">VOLVER AL MENU PRINCIPAL</button>
+  </div>
+
+  <!-- PYMES -->
+  <div id="slide-pymes" class="slide">
+    <h2>PYMES</h2>
+    <div class="grid-container">
+      <button onclick="checkSequence('APERTURA CUENTA PYME')">APERTURA CUENTA PYME</button>
+      <button onclick="checkSequence('EJECUTIVO PYME')">EJECUTIVO PYME</button>
+      <button onclick="checkSequence('CONSULTA SALDO PYME')">CONSULTA SALDO PYME</button>
+      <button onclick="checkSequence('VENTANILLA PYME')">VENTANILLA PYME</button>
+    </div>
+      <button class="no-animate" onclick="goTo('slide-menu')">VOLVER AL MENU PRINCIPAL</button>
+  </div>
+
+  <!-- DEPOSITOS < 30000 -->
+  <div id="slide-depositos" class="slide">
+    <h2>DEPOSITOS MENORES A $30,000</h2>
+    <div class="grid-container">
+      <button class="auto-height" onclick="checkSequence('DEPOSITOS MENORES 30000')">LOS DEPOSITOS MENORES A $30,000 DEBEN SER REALIZADOS EN LOS CAJEROS AUTOMATICOS</button>
+    </div>
+      <button class="no-animate" onclick="goTo('slide-menu')">VOLVER AL MENU PRINCIPAL</button>
+  </div>
+
+  <!-- FINAL -->
+  <div id="slide-final" class="slide">
+    <h2>Eureka!!!</h2>
+    <img id="final-image" src="imagen_final.png" alt="Imagen Final">
+    <div class="grid-container">
+      <button class="no-animate" onclick="goTo('slide-menu')">VOLVER AL MENU PRINCIPAL</button>
+    </div>
+  </div>
+
+  <script>
+    const correctSequence = [
+      "APERTURA CUENTA",
+      "EJECUTIVO CUENTA",
+      "EJECUTIVO PREMIUM",
+      "DEPOSITOS Y RETIROS",
+      "PAGO TARJETAS",
+      "PAGO SERVICIOS",
+      "DEPOSITOS MENORES 30000"
+    ];
+    let currentStep = 0;
+
+    function goTo(id) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function checkSequence(step) {
+      if (step === correctSequence[currentStep]) {
+        currentStep++;
+        if (currentStep === correctSequence.length) {
+          goTo('slide-final');
+          currentStep = 0;
+          setTimeout(() => {
+            goTo('slide-menu');
+          }, 5 * 60 * 1000); // 5 minutos
+        }
+      } else {
+        currentStep = 0; // si se equivocan, reinicia
+      }
+    }
+  </script>
+
+</body>
+</html>
