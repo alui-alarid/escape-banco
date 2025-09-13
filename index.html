@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Escape Room - Juego</title>
+  <link rel="icon" type="image/png" href="images/icon.png">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -58,9 +59,27 @@
         padding-top: 20px;
         padding-bottom: 20px;
     }
+
+    .watermark {
+        position: fixed;
+        bottom: 10vh;
+        right: 10vw;
+        z-index: 1000;
+        pointer-events: none;
+    }
+
+    .watermark img {
+        height: 10vh;
+        width: auto;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Watermark -->
+  <div class="watermark">
+    <img src="images/logo.png" alt="Logo">
+  </div>
 
   <!-- Menú principal -->
   <div id="slide-menu" class="slide active ">
