@@ -36,8 +36,13 @@
       background-color: #555;
     }
     #final-image {
-      max-width: 90%;
-      margin-top: 20px;
+      max-width: 100%;
+      max-height: 80%;
+      width: auto;
+      height: auto;
+      margin: 20px auto;
+      display: block;
+      object-fit: contain;
     }
     .grid-container {
         display: grid;
@@ -66,18 +71,35 @@
         right: 10vw;
         z-index: 1000;
         pointer-events: none;
+        transition: opacity 0.3s ease;
     }
 
     .watermark img {
         height: 10vh;
         width: auto;
     }
+
+    .watermark.hidden {
+        opacity: 0;
+    }
+
+    #slide-final button {
+        margin-top: 20px;
+        left: 20px;
+        background: none;
+        color: darkgrey;
+        font-size: 14px;
+        padding: 10px 15px;
+        border: none;
+        text-decoration: underline;
+        cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
   <!-- Watermark -->
-  <div class="watermark">
+  <div class="watermark" id="watermark">
     <img src="images/logo.png" alt="Logo">
   </div>
 
@@ -139,28 +161,32 @@
 
   <!-- FINAL -->
   <div id="slide-final" class="slide">
-    <h2>Eureka!!!</h2>
-    <img id="final-image" src="imagen_final.png" alt="Imagen Final">
-    <div class="grid-container">
-      <button class="no-animate" onclick="goTo('slide-menu')">VOLVER AL MENU PRINCIPAL</button>
-    </div>
+    <img id="final-image" src="images/imagen_final.jpg" alt="Eureka"/>
+    <button class="no-animate" onclick="goTo('slide-menu')">VOLVER AL MENU PRINCIPAL</button>
   </div>
 
   <script>
     const correctSequence = [
-      "APERTURA CUENTA",
-      "EJECUTIVO CUENTA",
-      "EJECUTIVO PREMIUM",
-      "DEPOSITOS Y RETIROS",
-      "PAGO TARJETAS",
-      "PAGO SERVICIOS",
-      "DEPOSITOS MENORES 30000"
+      "APERTURA CUENTA",// Aun no soy cliente
+      "EJECUTIVO CUENTA", // Clientes
+      "EJECUTIVO PREMIUM", // Clientes
+      "DEPOSITOS Y RETIROS", // Aun no soy cliente
+      "PAGO TARJETAS", // Aun no soy cliente
+      "PAGO SERVICIOS", // Aun no soy cliente
+      "DEPOSITOS MENORES 30000" //Depositos < 30000
     ];
     let currentStep = 0;
 
     function goTo(id) {
       document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
+
+      const watermark = document.getElementById('watermark');
+      if (id === 'slide-final') {
+        watermark.classList.add('hidden');
+      } else {
+        watermark.classList.remove('hidden');
+      }
     }
 
     function checkSequence(step) {
